@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日記 ― 江戸暦</title>
+<meta name="robots" content="noai, noimageai">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Serif+JP:wght@300;400;500;600&family=Zen+Old+Mincho:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1e3a2f;
+    --green-mid: #33513f;
+    --green-soft: #4c6b54;
+    --paper: #f2ead6;
+    --paper-dim: #e8ddc3;
+    --red: #9c3d3a;
+    --red-deep: #7c2f2e;
+    --yellow: #d6a13d;
+    --yellow-soft: #e6c374;
+    --ink: #241f1a;
+    --ink-soft: #45403a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  ::selection { background: var(--yellow-soft); color: var(--ink); }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+  }
+
+  /* ---------- 文様パターン（麻の葉） ---------- */
+  .asanoha-band {
+    height: 34px;
+    width: 100%;
+    background-color: var(--green-deep);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3Cg fill='none' stroke='%239c3d3a' stroke-width='1' transform='translate(0 30)'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 52px 45px;
+    background-repeat: repeat;
+    box-shadow: inset 0 2px 0 rgba(0,0,0,0.15), inset 0 -2px 0 rgba(0,0,0,0.15);
+  }
+
+  /* ---------- ヘッダー ---------- */
+  header {
+    background: var(--green-deep);
+    color: var(--paper);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .nav-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+  }
+
+  .brand {
+    font-size: 1.25rem;
+    letter-spacing: 0.18em;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .brand span.sub {
+    font-family: "Noto Serif JP", serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    color: var(--yellow-soft);
+    font-weight: 300;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2.2rem;
+  }
+
+  nav a {
+    font-size: 0.92rem;
+    letter-spacing: 0.12em;
+    padding: 4px 2px;
+    position: relative;
+  }
+
+  nav a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -4px;
+    height: 2px;
+    background: var(--yellow);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+
+  nav a:hover::after,
+  nav a:focus-visible::after { transform: scaleX(1); }
+
+  nav a.current::after { transform: scaleX(1); background: var(--red); }
+
+  /* ---------- ページ見出し ---------- */
+  .page-head {
+    background: var(--green-deep);
+    color: var(--paper);
+    padding: 3.6rem 1.6rem 3.2rem;
+    text-align: center;
+  }
+
+  .page-head .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.4em;
+    color: var(--yellow-soft);
+    margin-bottom: 1rem;
+  }
+
+  .page-head h1 {
+    font-family: "Shippori Mincho", serif;
+    font-size: clamp(2rem, 5vw, 2.9rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+
+  .page-head p {
+    margin-top: 1rem;
+    color: var(--paper-dim);
+    font-size: 0.92rem;
+    max-width: 32em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---------- 日記一覧 ---------- */
+  .diary {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 1.6rem 5.5rem;
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 108px 1fr;
+    gap: 1.6rem;
+    padding: 2.1rem 0;
+    border-bottom: 1px solid var(--paper-dim);
+  }
+
+  .entry:first-child { padding-top: 0; }
+  .entry:last-child { border-bottom: none; }
+
+  .entry .date {
+    font-family: "Shippori Mincho", serif;
+    color: var(--red-deep);
+  }
+
+  .entry .date .day {
+    display: block;
+    font-size: 1.9rem;
+    line-height: 1.1;
+    font-weight: 700;
+  }
+
+  .entry .date .ym {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--green-mid);
+    margin-top: 0.35rem;
+  }
+
+  .entry .date .youbi {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    color: var(--paper);
+    background: var(--green-mid);
+    padding: 1px 8px;
+  }
+
+  .entry .body p {
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .entry .body p + p { margin-top: 0.9rem; }
+
+  /* ---------- もっと見る（将来の拡張用の控えめな注記） ---------- */
+  .more-note {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1.6rem 4.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- フッター ---------- */
+  footer {
+    background: var(--ink);
+    color: var(--paper-dim);
+    padding: 3.2rem 1.6rem 2.4rem;
+    text-align: center;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+  }
+
+  footer .hub-link {
+    display: inline-block;
+    margin-bottom: 1.4rem;
+    color: var(--yellow-soft);
+    border-bottom: 1px solid var(--yellow-soft);
+    padding-bottom: 2px;
+    font-size: 0.85rem;
+  }
+
+  footer .notice {
+    max-width: 560px;
+    margin: 0 auto 1.6rem;
+    color: #a39c8e;
+    line-height: 1.8;
+    font-size: 0.74rem;
+  }
+
+  footer .copyright {
+    color: #7d766a;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* ---------- レスポンシブ ---------- */
+  @media (max-width: 560px) {
+    .nav-wrap { padding: 16px 20px; }
+    nav ul { gap: 1.1rem; }
+    nav a { font-size: 0.78rem; }
+    .entry { grid-template-columns: 72px 1fr; gap: 1rem; }
+    .entry .date .day { font-size: 1.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">江戸暦 <span class="sub">EDO KOYOMI</span></div>
+    <nav aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html">扉</a></li>
+        <li><a href="blog.html" class="current">日記</a></li>
+        <li><a href="gallery.html">画帖</a></li>
+        <li><a href="about.html">私について</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<section class="page-head">
+  <p class="eyebrow">DIARY</p>
+  <h1>日記</h1>
+  <p>調べたことや気づいたことを、日付とともに短く書き留めています。</p>
+</section>
+
+<main class="diary">
+
+  <article class="entry">
+    <div class="date">
+      <span class="day">23</span>
+      <span class="ym">2026 / 08</span>
+      <span class="youbi">日</span>
+    </div>
+    <div class="body">
+      <p>処暑を過ぎても日中はまだ暑い。江戸の人々も、団扇片手に夕涼みをしていたのだろうかと考える。今日は江戸の年中行事について調べていた。八朔（八月一日）は武家にとって重要な礼式の日だったらしい。</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="date">
+      <span class="day">15</span>
+      <span class="ym">2026 / 08</span>
+      <span class="youbi">土</span>
+    </div>
+    <div class="body">
+      <p>浮世絵の色摺りについて少し調べる。藍と紅を重ねる技法が版元によって違うことが面白かった。今度、画帖のページにもまとめたい。</p>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div class="date">
+      <span class="day">02</span>
+      <span class="ym">2026 / 08</span>
+      <span class="youbi">日</span>
+    </div>
+    <div class="body">
+      <p>寺子屋のしくみについて。読み書きだけでなく、そろばんや礼儀作法も教えていたと知り、思っていたより教育の幅が広いことに驚いた。</p>
+    </div>
+  </article>
+
+</main>
+
+<p class="more-note">これから少しずつ書き足していきます。</p>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<footer>
+  <a class="hub-link" href="https://azaleacreativeroom888.github.io">Azalea Creative Room に戻る</a>
+  <p class="notice">当サイトの文章および画像は、AIモデルの学習目的での使用・収集を禁止します。<br>No AI training on this site's text or images without permission.</p>
+  <p class="copyright">© 江戸暦 ― Azalea72</p>
+</footer>
+
+</body>
+</html>
