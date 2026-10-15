@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>江戸時代の人物図鑑 ― 江戸暦</title>
+<meta name="robots" content="noai, noimageai">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1e3a2f;
+    --green-mid: #33513f;
+    --green-soft: #4c6b54;
+    --paper: #f2ead6;
+    --paper-dim: #e8ddc3;
+    --red: #9c3d3a;
+    --red-deep: #7c2f2e;
+    --yellow: #d6a13d;
+    --yellow-soft: #e6c374;
+    --ink: #241f1a;
+    --ink-soft: #45403a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--yellow-soft); color: var(--ink); }
+  a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+  /* ---------- 麻の葉の帯 ---------- */
+  .asanoha-band {
+    height: 34px;
+    width: 100%;
+    background-color: var(--green-deep);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3Cg fill='none' stroke='%239c3d3a' stroke-width='1' transform='translate(0 30)'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 52px 45px;
+    box-shadow: inset 0 2px 0 rgba(0,0,0,0.15), inset 0 -2px 0 rgba(0,0,0,0.15);
+  }
+
+  /* ---------- ヘッダー ---------- */
+  header { background: var(--green-deep); color: var(--paper); position: sticky; top: 0; z-index: 20; }
+
+  .nav-wrap {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px;
+  }
+
+  .brand { font-size: 1.25rem; letter-spacing: 0.18em; display: flex; align-items: baseline; gap: 10px; font-family: "Shippori Mincho", serif; }
+  .brand span.sub { font-family: "Noto Serif JP", serif; font-size: 0.62rem; letter-spacing: 0.12em; color: var(--yellow-soft); font-weight: 300; }
+
+  nav ul { list-style: none; display: flex; gap: 2.2rem; }
+  nav a { font-size: 0.92rem; letter-spacing: 0.12em; padding: 4px 2px; position: relative; }
+  nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
+    background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease;
+  }
+  nav a:hover::after, nav a:focus-visible::after { transform: scaleX(1); }
+  nav a.current::after { transform: scaleX(1); background: var(--red); }
+
+  /* ---------- ページ見出し ---------- */
+  .page-head { background: var(--green-deep); color: var(--paper); padding: 3.6rem 1.6rem 3.2rem; text-align: center; }
+  .page-head .eyebrow { font-size: 0.75rem; letter-spacing: 0.4em; color: var(--yellow-soft); margin-bottom: 1rem; }
+  .page-head h1 { font-family: "Shippori Mincho", serif; font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 700; letter-spacing: 0.1em; }
+  .page-head p { margin: 1rem auto 0; color: var(--paper-dim); font-size: 0.92rem; max-width: 34em; }
+
+  /* ---------- 図鑑 ---------- */
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 3.4rem 1.6rem 5rem; }
+
+  .crumb { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 2rem; letter-spacing: 0.08em; }
+  .crumb a { color: var(--red-deep); border-bottom: 1px solid var(--red-deep); padding-bottom: 1px; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem;
+    font-size: 0.78rem; color: var(--ink-soft);
+    margin-bottom: 2.4rem;
+    padding: 0.9rem 1.2rem;
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    border-left: 4px solid var(--yellow);
+  }
+  .legend span b { font-family: "Shippori Mincho", serif; color: var(--green-deep); margin-right: 0.3em; }
+
+  .zukan {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem 1.8rem;
+  }
+
+  .person {
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .person:hover { transform: translateY(-5px); box-shadow: 0 14px 28px rgba(30,58,47,0.2); }
+
+  /* 柄の帯 */
+  .strip { height: 16px; border-bottom: 2px solid var(--green-deep); }
+  .p-asanoha  { background-color: var(--green-mid); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1.2'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3Cg fill='none' stroke='%23c9564f' stroke-width='1.2' transform='translate(0 30)'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3C/svg%3E"); background-size: 52px 45px; }
+  .p-seigaiha { background-color: var(--green-deep); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1.2'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='12'/%3E%3Ccircle cx='0' cy='30' r='28'/%3E%3Ccircle cx='0' cy='30' r='20'/%3E%3Ccircle cx='0' cy='30' r='12'/%3E%3Ccircle cx='60' cy='30' r='28'/%3E%3Ccircle cx='60' cy='30' r='20'/%3E%3Ccircle cx='60' cy='30' r='12'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 30px; }
+  .p-ichimatsu { background-color: var(--green-deep); background-image: linear-gradient(45deg, var(--red) 25%, transparent 25%, transparent 75%, var(--red) 75%), linear-gradient(45deg, var(--red) 25%, transparent 25%, transparent 75%, var(--red) 75%); background-size: 32px 32px; background-position: 0 0, 16px 16px; }
+  .p-yagasuri { background-color: var(--yellow-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='60' viewBox='0 0 40 60'%3E%3Cg fill='none' stroke='%239c3d3a' stroke-width='2.4'%3E%3Cpath d='M20 4V56'/%3E%3Cpath d='M8 20L20 4L32 20'/%3E%3Cpath d='M8 38L20 22L32 38'/%3E%3C/g%3E%3C/svg%3E"); background-size: 40px 60px; }
+  .p-shippo { background-color: var(--red-deep); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23e6c374' stroke-width='1.4'%3E%3Ccircle cx='0' cy='0' r='20'/%3E%3Ccircle cx='40' cy='0' r='20'/%3E%3Ccircle cx='0' cy='40' r='20'/%3E%3Ccircle cx='40' cy='40' r='20'/%3E%3Ccircle cx='20' cy='20' r='20'/%3E%3C/g%3E%3C/svg%3E"); background-size: 40px 40px; }
+  .p-kikko { background-color: var(--green-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='80' viewBox='0 0 46 80'%3E%3Cg fill='none' stroke='%23e6c374' stroke-width='1.4'%3E%3Cpath d='M23 0L46 13V40L23 53L0 40V13Z'/%3E%3Cpath d='M23 40L46 53V80M23 40L0 53V80'/%3E%3C/g%3E%3C/svg%3E"); background-size: 46px 40px; }
+
+  .person-body { padding: 1.5rem 1.7rem 1.7rem; display: flex; flex-direction: column; gap: 1rem; flex-grow: 1; }
+
+  .name-row { display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap; }
+  .num { font-family: "Shippori Mincho", serif; font-size: 0.78rem; color: var(--red); border: 1px solid var(--red); padding: 0 10px; border-radius: 999px; letter-spacing: 0.05em; }
+  .name { font-family: "Shippori Mincho", serif; font-size: 1.5rem; font-weight: 700; color: var(--green-deep); letter-spacing: 0.08em; line-height: 1.4; }
+  .yomi { font-size: 0.72rem; color: var(--ink-soft); letter-spacing: 0.1em; width: 100%; margin-top: -0.4rem; }
+
+  .fields { display: grid; grid-template-columns: 5.6em 1fr; gap: 0.7rem 1rem; font-size: 0.88rem; }
+  .fields dt {
+    font-family: "Shippori Mincho", serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--paper);
+    background: var(--green-mid);
+    text-align: center;
+    padding: 2px 0;
+    align-self: start;
+    letter-spacing: 0.1em;
+  }
+  .fields dt.ev { background: var(--red); }
+  .fields dd { color: var(--ink-soft); line-height: 1.8; }
+  .fields dd.year { font-family: "Shippori Mincho", serif; font-weight: 600; color: var(--ink); }
+
+  .back-wrap { text-align: center; margin-top: 3.4rem; }
+  .back-link { display: inline-block; font-size: 0.88rem; color: var(--red-deep); border-bottom: 1px solid var(--red-deep); padding-bottom: 2px; letter-spacing: 0.1em; }
+
+  /* ---------- フッター ---------- */
+  footer { background: var(--ink); color: var(--paper-dim); padding: 3.2rem 1.6rem 2.4rem; text-align: center; font-size: 0.8rem; }
+  footer .hub-link { display: inline-block; margin-bottom: 1.4rem; color: var(--yellow-soft); border-bottom: 1px solid var(--yellow-soft); padding-bottom: 2px; font-size: 0.85rem; }
+  footer .notice { max-width: 560px; margin: 0 auto 1.6rem; color: #a39c8e; line-height: 1.8; font-size: 0.74rem; }
+  footer .copyright { color: #7d766a; font-size: 0.72rem; letter-spacing: 0.1em; }
+
+  /* ---------- レスポンシブ ---------- */
+  @media (max-width: 820px) { .zukan { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .nav-wrap { padding: 16px 20px; }
+    nav ul { gap: 1.1rem; }
+    nav a { font-size: 0.78rem; }
+    .person-body { padding: 1.3rem 1.2rem 1.5rem; }
+    .fields { grid-template-columns: 1fr; gap: 0.3rem; }
+    .fields dt { text-align: left; padding-left: 10px; margin-top: 0.5rem; width: fit-content; min-width: 5.6em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">江戸暦 <span class="sub">EDO KOYOMI</span></div>
+    <nav aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html">扉</a></li>
+        <li><a href="blog.html">日記</a></li>
+        <li><a href="gallery.html" class="current">画帖</a></li>
+        <li><a href="about.html">私について</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<section class="page-head">
+  <p class="eyebrow">SPECIAL FEATURE</p>
+  <h1>江戸時代の人物図鑑</h1>
+  <p>将軍、文人、絵師、学者など、江戸の世を彩った十二人を集めました。</p>
+</section>
+
+<main class="wrap">
+
+  <p class="crumb"><a href="gallery.html">画帖</a> ／ 江戸時代の人物図鑑</p>
+
+  <div class="legend" aria-label="図鑑の見かた">
+    <span><b>人物名</b>お名前と読み</span>
+    <span><b>没年</b>亡くなった年</span>
+    <span><b>説明</b>どんな人物か</span>
+    <span><b>有名な出来事</b>代表的なできごと</span>
+  </div>
+
+  <div class="zukan">
+
+    <article class="person">
+      <div class="strip p-asanoha"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">壱</span>
+          <h2 class="name">徳川家康</h2>
+          <span class="yomi">とくがわ いえやす</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">元和2年（1616年）</dd>
+          <dt>説明</dt><dd>江戸幕府の初代将軍。戦国の世を勝ち抜き、約260年続く幕府の基礎を築きました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>関ヶ原の戦い（1600年）、江戸幕府の開府（1603年）、大坂の陣（1614〜1615年）</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-seigaiha"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">弐</span>
+          <h2 class="name">徳川家光</h2>
+          <span class="yomi">とくがわ いえみつ</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">慶安4年（1651年）</dd>
+          <dt>説明</dt><dd>江戸幕府の3代将軍。幕府の支配体制を整え、将軍を中心とする政治の仕組みを固めました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>参勤交代の制度化（1635年）、島原の乱（1637〜1638年）、鎖国体制の完成</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-ichimatsu"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">参</span>
+          <h2 class="name">徳川綱吉</h2>
+          <span class="yomi">とくがわ つなよし</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">宝永6年（1709年）</dd>
+          <dt>説明</dt><dd>江戸幕府の5代将軍。学問を重んじた一方、動物の保護を強く命じたことでも知られます。</dd>
+          <dt class="ev">有名な出来事</dt><dd>生類憐みの令、湯島聖堂の建立、赤穂事件（在任中）</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-yagasuri"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">四</span>
+          <h2 class="name">徳川吉宗</h2>
+          <span class="yomi">とくがわ よしむね</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">寛延4年（1751年）</dd>
+          <dt>説明</dt><dd>江戸幕府の8代将軍。傾いた幕府の財政を立て直そうと、質素倹約と改革に取り組みました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>享保の改革、目安箱の設置（1721年）、公事方御定書の編纂</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-shippo"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">五</span>
+          <h2 class="name">田沼意次</h2>
+          <span class="yomi">たぬま おきつぐ</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">天明8年（1788年）</dd>
+          <dt>説明</dt><dd>10代将軍家治のもとで老中を務めた政治家。商業の力を活かした政策を進めました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>株仲間の公認と積極的な商業政策（田沼時代）、1786年の老中失脚</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-kikko"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">六</span>
+          <h2 class="name">松尾芭蕉</h2>
+          <span class="yomi">まつお ばしょう</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">元禄7年（1694年）</dd>
+          <dt>説明</dt><dd>江戸前期の俳諧師。言葉遊びだった俳諧を、芸術性の高い文学へと高めました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>『おくのほそ道』の旅（1689年）、深川の芭蕉庵での暮らし</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-asanoha"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">七</span>
+          <h2 class="name">近松門左衛門</h2>
+          <span class="yomi">ちかまつ もんざえもん</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">享保9年（1724年）</dd>
+          <dt>説明</dt><dd>浄瑠璃・歌舞伎の作者。町人の恋や義理と人情を描いた作品で、大坂を中心に人気を集めました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>『曽根崎心中』の初演（1703年）、『国性爺合戦』の大ヒット</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-seigaiha"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">八</span>
+          <h2 class="name">葛飾北斎</h2>
+          <span class="yomi">かつしか ほくさい</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">嘉永2年（1849年）</dd>
+          <dt>説明</dt><dd>江戸後期の浮世絵師。90年の生涯で名を何度も変え、風景画から肉筆画まで幅広く描きました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>『富嶽三十六景』の刊行（1830年代初め）、『北斎漫画』の出版</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-ichimatsu"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">九</span>
+          <h2 class="name">歌川広重</h2>
+          <span class="yomi">うたがわ ひろしげ</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">安政5年（1858年）</dd>
+          <dt>説明</dt><dd>江戸後期の浮世絵師。叙情あふれる風景画で人気を集め、旅の景色を詩情豊かに描きました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>『東海道五十三次』の刊行（1833〜1834年頃）、『名所江戸百景』の制作</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-yagasuri"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">十</span>
+          <h2 class="name">伊能忠敬</h2>
+          <span class="yomi">いのう ただたか</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">文政元年（1818年）</dd>
+          <dt>説明</dt><dd>商人から天文学・測量の道へ進み、50代で日本全国を歩いて測量した人物です。</dd>
+          <dt class="ev">有名な出来事</dt><dd>蝦夷地の測量に出発（1800年）、『大日本沿海輿地全図』の完成（没後の1821年）</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-shippo"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">十一</span>
+          <h2 class="name">坂本龍馬</h2>
+          <span class="yomi">さかもと りょうま</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">慶応3年（1867年）</dd>
+          <dt>説明</dt><dd>土佐出身の志士。幕末の混乱のなか、対立していた藩どうしを結びつけるために奔走しました。</dd>
+          <dt class="ev">有名な出来事</dt><dd>薩長同盟の仲介（1866年）、船中八策、京都・近江屋での暗殺（1867年）</dd>
+        </dl>
+      </div>
+    </article>
+
+    <article class="person">
+      <div class="strip p-kikko"></div>
+      <div class="person-body">
+        <div class="name-row">
+          <span class="num">十二</span>
+          <h2 class="name">勝海舟</h2>
+          <span class="yomi">かつ かいしゅう</span>
+        </div>
+        <dl class="fields">
+          <dt>没年</dt><dd class="year">明治32年（1899年）</dd>
+          <dt>説明</dt><dd>幕末の幕臣。海軍の整備に力を尽くし、江戸の町を戦火から守る交渉で知られます。</dd>
+          <dt class="ev">有名な出来事</dt><dd>咸臨丸での渡米（1860年）、西郷隆盛との会談と江戸城の無血開城（1868年）</dd>
+        </dl>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="back-wrap">
+    <a class="back-link" href="gallery.html">← 画帖に戻る</a>
+  </div>
+
+</main>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<footer>
+  <a class="hub-link" href="https://azaleacreativeroom888.github.io">Azalea Creative Room に戻る</a>
+  <p class="notice">当サイトの文章および画像は、AIモデルの学習目的での使用・収集を禁止します。<br>No AI training on this site's text or images without permission.</p>
+  <p class="copyright">© 江戸暦 ― Azalea72</p>
+</footer>
+
+</body>
+</html>
