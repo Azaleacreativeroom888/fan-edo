@@ -127,6 +127,65 @@
 
   .p-kikko { background-color: var(--green-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='80' viewBox='0 0 46 80'%3E%3Cg fill='none' stroke='%23e6c374' stroke-width='1.4'%3E%3Cpath d='M23 0L46 13V40L23 53L0 40V13Z'/%3E%3Cpath d='M23 40L46 53V80M23 40L0 53V80'/%3E%3C/g%3E%3C/svg%3E"); background-size: 46px 40px; }
 
+  /* ---------- 特集ページへのリンクボックス ---------- */
+  .feature {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    border-bottom: 4px solid var(--red);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature:hover, .feature:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(30,58,47,0.22);
+  }
+
+  .feature-pattern {
+    min-height: 100%;
+    border-right: 3px solid var(--green-deep);
+  }
+
+  .feature-body { padding: 1.9rem 2rem 1.8rem; display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .feature-tag {
+    align-self: flex-start;
+    font-size: 0.72rem;
+    color: var(--paper);
+    background: var(--red);
+    padding: 1px 12px;
+    letter-spacing: 0.2em;
+  }
+
+  .feature-body h2 {
+    font-family: "Shippori Mincho", serif;
+    font-size: 1.5rem;
+    color: var(--green-deep);
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .feature-body p { font-size: 0.88rem; color: var(--ink-soft); }
+
+  .feature-body .go {
+    align-self: flex-start;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--red-deep);
+    border-bottom: 1px solid var(--red-deep);
+    padding-bottom: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .feature { grid-template-columns: 1fr; }
+    .feature-pattern { min-height: 90px; border-right: none; border-bottom: 3px solid var(--green-deep); }
+    .feature-body { padding: 1.5rem 1.3rem; }
+  }
+
   .caption { padding: 1rem 0.4rem 0; }
   .caption .no { font-family: "Shippori Mincho", serif; font-size: 0.72rem; color: var(--red); letter-spacing: 0.15em; }
   .caption h2 { font-family: "Shippori Mincho", serif; font-size: 1.02rem; color: var(--green-deep); letter-spacing: 0.06em; margin: 0.15rem 0 0.3rem; font-weight: 600; }
@@ -179,6 +238,16 @@
 </section>
 
 <main class="gallery">
+
+  <a class="feature" href="report1.html">
+    <div class="feature-pattern p-asanoha" aria-hidden="true"></div>
+    <div class="feature-body">
+      <span class="feature-tag">特集</span>
+      <h2>江戸時代の人物図鑑</h2>
+      <p>将軍、浮世絵師、俳人、町人など、江戸の世を彩った人びとを紹介する特集ページです。</p>
+      <span class="go">図鑑をひらく →</span>
+    </div>
+  </a>
 
   <figure class="frame">
     <div class="art p-asanoha" role="img" aria-label="麻の葉文様の仮画像"></div>
