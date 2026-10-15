@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>画帖 ― 江戸暦</title>
+<meta name="robots" content="noai, noimageai">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1e3a2f;
+    --green-mid: #33513f;
+    --green-soft: #4c6b54;
+    --paper: #f2ead6;
+    --paper-dim: #e8ddc3;
+    --red: #9c3d3a;
+    --red-deep: #7c2f2e;
+    --yellow: #d6a13d;
+    --yellow-soft: #e6c374;
+    --ink: #241f1a;
+    --ink-soft: #45403a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--yellow-soft); color: var(--ink); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+  /* ---------- 麻の葉の帯 ---------- */
+  .asanoha-band {
+    height: 34px;
+    width: 100%;
+    background-color: var(--green-deep);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3Cg fill='none' stroke='%239c3d3a' stroke-width='1' transform='translate(0 30)'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 52px 45px;
+    box-shadow: inset 0 2px 0 rgba(0,0,0,0.15), inset 0 -2px 0 rgba(0,0,0,0.15);
+  }
+
+  /* ---------- ヘッダー ---------- */
+  header { background: var(--green-deep); color: var(--paper); position: sticky; top: 0; z-index: 20; }
+
+  .nav-wrap {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px;
+  }
+
+  .brand { font-size: 1.25rem; letter-spacing: 0.18em; display: flex; align-items: baseline; gap: 10px; font-family: "Shippori Mincho", serif; }
+  .brand span.sub { font-family: "Noto Serif JP", serif; font-size: 0.62rem; letter-spacing: 0.12em; color: var(--yellow-soft); font-weight: 300; }
+
+  nav ul { list-style: none; display: flex; gap: 2.2rem; }
+  nav a { font-size: 0.92rem; letter-spacing: 0.12em; padding: 4px 2px; position: relative; }
+  nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
+    background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease;
+  }
+  nav a:hover::after, nav a:focus-visible::after { transform: scaleX(1); }
+  nav a.current::after { transform: scaleX(1); background: var(--red); }
+
+  /* ---------- ページ見出し ---------- */
+  .page-head { background: var(--green-deep); color: var(--paper); padding: 3.6rem 1.6rem 3.2rem; text-align: center; }
+  .page-head .eyebrow { font-size: 0.75rem; letter-spacing: 0.4em; color: var(--yellow-soft); margin-bottom: 1rem; }
+  .page-head h1 { font-family: "Shippori Mincho", serif; font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 700; letter-spacing: 0.12em; }
+  .page-head p { margin: 1rem auto 0; color: var(--paper-dim); font-size: 0.92rem; max-width: 32em; }
+
+  /* ---------- ギャラリー ---------- */
+  .gallery {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 4.2rem 1.6rem 5.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.2rem 1.8rem;
+  }
+
+  .frame {
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    padding: 12px 12px 1.1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .frame:hover, .frame:focus-within {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 28px rgba(30,58,47,0.22);
+  }
+
+  /* 画像が入る部分。画像を入れる場合は <img> に差し替え */
+  .art {
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid var(--green-deep);
+    outline: 1px solid var(--yellow);
+    outline-offset: -8px;
+  }
+
+  .art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* 着物柄の仮タイル（SVGパターン） */
+  .p-asanoha  { background-color: var(--green-mid); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1.2'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3Cg fill='none' stroke='%23c9564f' stroke-width='1.2' transform='translate(0 30)'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3C/svg%3E"); background-size: 52px 45px; }
+
+  .p-seigaiha { background-color: var(--green-deep); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30' viewBox='0 0 60 30'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1.2'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='12'/%3E%3Ccircle cx='0' cy='30' r='28'/%3E%3Ccircle cx='0' cy='30' r='20'/%3E%3Ccircle cx='0' cy='30' r='12'/%3E%3Ccircle cx='60' cy='30' r='28'/%3E%3Ccircle cx='60' cy='30' r='20'/%3E%3Ccircle cx='60' cy='30' r='12'/%3E%3C/g%3E%3C/svg%3E"); background-size: 60px 30px; }
+
+  .p-ichimatsu { background-color: var(--green-deep); background-image:
+    linear-gradient(45deg, var(--red) 25%, transparent 25%, transparent 75%, var(--red) 75%),
+    linear-gradient(45deg, var(--red) 25%, transparent 25%, transparent 75%, var(--red) 75%);
+    background-size: 44px 44px; background-position: 0 0, 22px 22px; }
+
+  .p-yagasuri { background-color: var(--yellow-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='60' viewBox='0 0 40 60'%3E%3Cg fill='none' stroke='%239c3d3a' stroke-width='2.4'%3E%3Cpath d='M20 4V56'/%3E%3Cpath d='M8 20L20 4L32 20'/%3E%3Cpath d='M8 38L20 22L32 38'/%3E%3C/g%3E%3C/svg%3E"); background-size: 40px 60px; }
+
+  .p-shippo { background-color: var(--red-deep); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cg fill='none' stroke='%23e6c374' stroke-width='1.4'%3E%3Ccircle cx='0' cy='0' r='20'/%3E%3Ccircle cx='40' cy='0' r='20'/%3E%3Ccircle cx='0' cy='40' r='20'/%3E%3Ccircle cx='40' cy='40' r='20'/%3E%3Ccircle cx='20' cy='20' r='20'/%3E%3C/g%3E%3C/svg%3E"); background-size: 40px 40px; }
+
+  .p-kikko { background-color: var(--green-soft); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='80' viewBox='0 0 46 80'%3E%3Cg fill='none' stroke='%23e6c374' stroke-width='1.4'%3E%3Cpath d='M23 0L46 13V40L23 53L0 40V13Z'/%3E%3Cpath d='M23 40L46 53V80M23 40L0 53V80'/%3E%3C/g%3E%3C/svg%3E"); background-size: 46px 40px; }
+
+  .caption { padding: 1rem 0.4rem 0; }
+  .caption .no { font-family: "Shippori Mincho", serif; font-size: 0.72rem; color: var(--red); letter-spacing: 0.15em; }
+  .caption h2 { font-family: "Shippori Mincho", serif; font-size: 1.02rem; color: var(--green-deep); letter-spacing: 0.06em; margin: 0.15rem 0 0.3rem; font-weight: 600; }
+  .caption p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.7; }
+
+  .note { max-width: 720px; margin: 0 auto; padding: 0 1.6rem 4.5rem; text-align: center; font-size: 0.8rem; color: var(--ink-soft); }
+
+  /* ---------- フッター ---------- */
+  footer { background: var(--ink); color: var(--paper-dim); padding: 3.2rem 1.6rem 2.4rem; text-align: center; font-size: 0.8rem; }
+  footer .hub-link { display: inline-block; margin-bottom: 1.4rem; color: var(--yellow-soft); border-bottom: 1px solid var(--yellow-soft); padding-bottom: 2px; font-size: 0.85rem; }
+  footer .notice { max-width: 560px; margin: 0 auto 1.6rem; color: #a39c8e; line-height: 1.8; font-size: 0.74rem; }
+  footer .copyright { color: #7d766a; font-size: 0.72rem; letter-spacing: 0.1em; }
+
+  /* ---------- レスポンシブ ---------- */
+  @media (max-width: 860px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) {
+    .nav-wrap { padding: 16px 20px; }
+    nav ul { gap: 1.1rem; }
+    nav a { font-size: 0.78rem; }
+    .gallery { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">江戸暦 <span class="sub">EDO KOYOMI</span></div>
+    <nav aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html">扉</a></li>
+        <li><a href="blog.html">日記</a></li>
+        <li><a href="gallery.html" class="current">画帖</a></li>
+        <li><a href="about.html">私について</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<section class="page-head">
+  <p class="eyebrow">GALLERY</p>
+  <h1>画帖</h1>
+  <p>江戸にまつわる絵や図、描いたものを集めた帖です。</p>
+</section>
+
+<main class="gallery">
+
+  <figure class="frame">
+    <div class="art p-asanoha" role="img" aria-label="麻の葉文様の仮画像"></div>
+    <figcaption class="caption">
+      <span class="no">其の壱</span>
+      <h2>麻の葉</h2>
+      <p>六角形を放射状に重ねた文様。成長の早い麻にあやかり、子どもの産着に使われました。</p>
+    </figcaption>
+  </figure>
+
+  <figure class="frame">
+    <div class="art p-seigaiha" role="img" aria-label="青海波文様の仮画像"></div>
+    <figcaption class="caption">
+      <span class="no">其の弐</span>
+      <h2>青海波</h2>
+      <p>同心円を重ねて波を表した文様。穏やかな海のように平穏な暮らしが続く願いが込められています。</p>
+    </figcaption>
+  </figure>
+
+  <figure class="frame">
+    <div class="art p-ichimatsu" role="img" aria-label="市松文様の仮画像"></div>
+    <figcaption class="caption">
+      <span class="no">其の参</span>
+      <h2>市松</h2>
+      <p>歌舞伎役者・佐野川市松が袴に用いて人気となった、格子状の文様です。</p>
+    </figcaption>
+  </figure>
+
+  <figure class="frame">
+    <div class="art p-yagasuri" role="img" aria-label="矢絣文様の仮画像"></div>
+    <figcaption class="caption">
+      <span class="no">其の四</span>
+      <h2>矢絣</h2>
+      <p>矢羽根を並べた文様。射った矢は戻らないことから、嫁入りの縁起物とされました。</p>
+    </figcaption>
+  </figure>
+
+  <figure class="frame">
+    <div class="art p-shippo" role="img" aria-label="七宝文様の仮画像"></div>
+    <figcaption class="caption">
+      <span class="no">其の五</span>
+      <h2>七宝</h2>
+      <p>円が連なる円満・調和の象徴。重なり合う輪が、ご縁の広がりを表すといわれます。</p>
+    </figcaption>
+  </figure>
+
+  <figure class="frame">
+    <div class="art p-kikko" role="img" aria-label="亀甲文様の仮画像"></div>
+    <figcaption class="caption">
+      <span class="no">其の六</span>
+      <h2>亀甲</h2>
+      <p>亀の甲羅に見立てた六角形の文様。長寿を願う吉祥柄として親しまれてきました。</p>
+    </figcaption>
+  </figure>
+
+</main>
+
+<p class="note">作品は少しずつ増やしていきます。</p>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<footer>
+  <a class="hub-link" href="https://azaleacreativeroom888.github.io">Azalea Creative Room に戻る</a>
+  <p class="notice">当サイトの文章および画像は、AIモデルの学習目的での使用・収集を禁止します。<br>No AI training on this site's text or images without permission.</p>
+  <p class="copyright">© 江戸暦 ― Azalea72</p>
+</footer>
+
+</body>
+</html>
