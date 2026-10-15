@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>私について ― 江戸暦</title>
+<meta name="robots" content="noai, noimageai">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #1e3a2f;
+    --green-mid: #33513f;
+    --green-soft: #4c6b54;
+    --paper: #f2ead6;
+    --paper-dim: #e8ddc3;
+    --red: #9c3d3a;
+    --red-deep: #7c2f2e;
+    --yellow: #d6a13d;
+    --yellow-soft: #e6c374;
+    --ink: #241f1a;
+    --ink-soft: #45403a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Noto Serif JP", serif;
+    font-weight: 300;
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--yellow-soft); color: var(--ink); }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
+
+  /* ---------- 麻の葉の帯 ---------- */
+  .asanoha-band {
+    height: 34px;
+    width: 100%;
+    background-color: var(--green-deep);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='52' height='90' viewBox='0 0 52 90'%3E%3Cg fill='none' stroke='%23d6a13d' stroke-width='1'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3Cg fill='none' stroke='%239c3d3a' stroke-width='1' transform='translate(0 30)'%3E%3Cpath d='M26 0L52 15V45L26 60L0 45V15Z'/%3E%3Cpath d='M26 0V60'/%3E%3Cpath d='M0 15L26 30L52 15'/%3E%3Cpath d='M0 45L26 30L52 45'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 52px 45px;
+    box-shadow: inset 0 2px 0 rgba(0,0,0,0.15), inset 0 -2px 0 rgba(0,0,0,0.15);
+  }
+
+  /* ---------- ヘッダー ---------- */
+  header { background: var(--green-deep); color: var(--paper); position: sticky; top: 0; z-index: 20; }
+
+  .nav-wrap {
+    max-width: 1080px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 28px;
+  }
+
+  .brand { font-size: 1.25rem; letter-spacing: 0.18em; display: flex; align-items: baseline; gap: 10px; font-family: "Shippori Mincho", serif; }
+  .brand span.sub { font-family: "Noto Serif JP", serif; font-size: 0.62rem; letter-spacing: 0.12em; color: var(--yellow-soft); font-weight: 300; }
+
+  nav ul { list-style: none; display: flex; gap: 2.2rem; }
+  nav a { font-size: 0.92rem; letter-spacing: 0.12em; padding: 4px 2px; position: relative; }
+  nav a::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
+    background: var(--yellow); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease;
+  }
+  nav a:hover::after, nav a:focus-visible::after { transform: scaleX(1); }
+  nav a.current::after { transform: scaleX(1); background: var(--red); }
+
+  /* ---------- ページ見出し ---------- */
+  .page-head { background: var(--green-deep); color: var(--paper); padding: 3.6rem 1.6rem 3.2rem; text-align: center; }
+  .page-head .eyebrow { font-size: 0.75rem; letter-spacing: 0.4em; color: var(--yellow-soft); margin-bottom: 1rem; }
+  .page-head h1 { font-family: "Shippori Mincho", serif; font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 700; letter-spacing: 0.12em; }
+  .page-head p { margin: 1rem auto 0; color: var(--paper-dim); font-size: 0.92rem; max-width: 32em; }
+
+  /* ---------- 本文 ---------- */
+  .wrap { max-width: 880px; margin: 0 auto; padding: 4rem 1.6rem 5rem; }
+
+  .section-label {
+    font-family: "Shippori Mincho", serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    letter-spacing: 0.1em;
+    margin: 3.2rem 0 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .section-label:first-child { margin-top: 0; }
+
+  .section-label::before {
+    content: "";
+    width: 10px; height: 10px;
+    background: var(--red);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .section-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--yellow), transparent);
+  }
+
+  .profile {
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    border-left: 4px solid var(--red);
+    padding: 1.8rem 1.9rem;
+  }
+
+  .profile p { font-size: 0.95rem; color: var(--ink-soft); }
+  .profile p + p { margin-top: 0.9rem; }
+
+  /* ---------- リンクカード ---------- */
+  .link-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.1rem;
+  }
+
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    border-top: 3px solid var(--green-mid);
+    padding: 1.05rem 1.2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-top-color 0.3s ease;
+  }
+
+  .link-card:nth-child(3n+2) { border-top-color: var(--yellow); }
+  .link-card:nth-child(3n+3) { border-top-color: var(--red); }
+
+  .link-card:hover, .link-card:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(30,58,47,0.2);
+  }
+
+  .link-icon {
+    font-size: 1.4rem;
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--paper);
+    border: 1px solid var(--yellow);
+  }
+
+  .link-text { flex: 1; min-width: 0; }
+
+  .link-name {
+    display: block;
+    font-family: "Shippori Mincho", serif;
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--green-deep);
+    line-height: 1.5;
+  }
+
+  .link-desc { display: block; font-size: 0.74rem; color: var(--ink-soft); line-height: 1.6; margin-top: 2px; }
+
+  .link-arrow { color: var(--red); font-size: 1.2rem; transition: transform 0.3s ease; }
+  .link-card:hover .link-arrow { transform: translateX(4px); }
+
+  /* ---------- フォーム ---------- */
+  .form-card {
+    background: #fbf7ec;
+    border: 1px solid var(--paper-dim);
+    border-top: 4px solid var(--green-deep);
+    padding: 2rem 2rem 2.2rem;
+  }
+
+  .form-intro { font-size: 0.88rem; color: var(--ink-soft); margin-bottom: 1.6rem; }
+
+  .form-group { margin-bottom: 1.3rem; }
+
+  .form-label {
+    display: block;
+    font-family: "Shippori Mincho", serif;
+    font-size: 0.85rem;
+    color: var(--green-deep);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .required { color: var(--red); font-style: normal; }
+
+  .form-input, .form-textarea {
+    width: 100%;
+    background: var(--paper);
+    border: 1px solid var(--green-soft);
+    color: var(--ink);
+    font-family: "Noto Serif JP", serif;
+    font-size: 0.95rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .form-input::placeholder, .form-textarea::placeholder { color: #9c917c; }
+
+  .form-input:focus, .form-textarea:focus {
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(214,161,61,0.35);
+    outline: none;
+  }
+
+  .form-textarea { resize: vertical; min-height: 150px; }
+
+  .field-error { display: block; font-size: 0.75rem; color: var(--red-deep); margin-top: 0.3rem; }
+
+  .form-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--green-deep);
+    color: var(--paper);
+    border: 2px solid var(--green-deep);
+    font-family: "Shippori Mincho", serif;
+    font-size: 0.98rem;
+    letter-spacing: 0.2em;
+    padding: 0.8rem 2.2rem;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+
+  .form-submit:hover { background: var(--red); border-color: var(--red); }
+  .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .form-success {
+    background: #e6efd9;
+    border: 1px solid var(--green-soft);
+    padding: 1rem 1.2rem;
+    text-align: center;
+    color: var(--green-deep);
+    font-size: 0.92rem;
+    margin-bottom: 1.4rem;
+  }
+
+  .form-error-global {
+    background: #f4dcd8;
+    border: 1px solid var(--red);
+    padding: 0.8rem 1.1rem;
+    color: var(--red-deep);
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 2.6rem;
+    font-size: 0.85rem;
+    color: var(--red-deep);
+    border-bottom: 1px solid var(--red-deep);
+    padding-bottom: 2px;
+    letter-spacing: 0.1em;
+  }
+
+  /* ---------- フッター ---------- */
+  footer { background: var(--ink); color: var(--paper-dim); padding: 3.2rem 1.6rem 2.4rem; text-align: center; font-size: 0.8rem; }
+  footer .hub-link { display: inline-block; margin-bottom: 1.4rem; color: var(--yellow-soft); border-bottom: 1px solid var(--yellow-soft); padding-bottom: 2px; font-size: 0.85rem; }
+  footer .notice { max-width: 640px; margin: 0 auto 1rem; color: #a39c8e; line-height: 1.9; font-size: 0.74rem; }
+  footer .copyright { color: #7d766a; font-size: 0.72rem; letter-spacing: 0.1em; margin-top: 1.4rem; }
+
+  /* ---------- レスポンシブ ---------- */
+  @media (max-width: 560px) {
+    .nav-wrap { padding: 16px 20px; }
+    nav ul { gap: 1.1rem; }
+    nav a { font-size: 0.78rem; }
+    .link-grid { grid-template-columns: 1fr; }
+    .form-card { padding: 1.5rem 1.2rem 1.7rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">江戸暦 <span class="sub">EDO KOYOMI</span></div>
+    <nav aria-label="サイト内ナビゲーション">
+      <ul>
+        <li><a href="index.html">扉</a></li>
+        <li><a href="blog.html">日記</a></li>
+        <li><a href="gallery.html">画帖</a></li>
+        <li><a href="about.html" class="current">私について</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<section class="page-head">
+  <p class="eyebrow">ABOUT &amp; CONTACT</p>
+  <h1>私について</h1>
+  <p>このサイトの運営者と、ご連絡先のご案内です。</p>
+</section>
+
+<main class="wrap">
+
+  <p class="section-label">このサイトについて</p>
+  <div class="profile">
+    <p>「江戸暦」は、江戸時代の暮らしや文化について調べたことを、日記や画帖のかたちで少しずつ書き留めているサイトです。</p>
+    <p>運営は Azalea72。漫画やイラストの創作活動の傍ら、気になった時代や文化についてのサイトを作っています。</p>
+  </div>
+
+  <p class="section-label">漫画・イラスト掲載サイト</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://rookie.shonenjump.com/users/14728546961183734555" target="_blank" rel="noopener">
+      <div class="link-icon">📚</div>
+      <div class="link-text">
+        <span class="link-name">ジャンプルーキー</span>
+        <span class="link-desc">オリジナル漫画を掲載中</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://www.pixiv.net/users/105728284" target="_blank" rel="noopener">
+      <div class="link-icon">🎨</div>
+      <div class="link-text">
+        <span class="link-name">Pixiv</span>
+        <span class="link-desc">二次創作はこちらに掲載</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+  </div>
+
+  <p class="section-label">SNS・その他</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://bsky.app/profile/azaleaazalea88.bsky.social" target="_blank" rel="noopener">
+      <div class="link-icon">🦋</div>
+      <div class="link-text">
+        <span class="link-name">Bluesky</span>
+        <span class="link-desc">近況・作品のお知らせ</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://www.youtube.com/@LilyPopins0512" target="_blank" rel="noopener">
+      <div class="link-icon">🎬</div>
+      <div class="link-text">
+        <span class="link-name">YouTube（リリポピ）</span>
+        <span class="link-desc">動画チャンネル</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://lilipopi.github.io/lilypopins/" target="_blank" rel="noopener">
+      <div class="link-icon">🌸</div>
+      <div class="link-text">
+        <span class="link-name">リリポピのホームページ</span>
+        <span class="link-desc">別サイト</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+  </div>
+
+  <p class="section-label">Azalea72のホームページ</p>
+  <div class="link-grid">
+
+    <a class="link-card" href="https://azaleacreativeroom888.github.io/storyreviewazalea/" target="_blank" rel="noopener">
+      <div class="link-icon">📖</div>
+      <div class="link-text">
+        <span class="link-name">書評サイト</span>
+        <span class="link-desc">本・アニメ・映画・ゲーム・小説の備忘録</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://azaleacreativeroom888.github.io/fan-english/" target="_blank" rel="noopener">
+      <div class="link-icon">🍔</div>
+      <div class="link-text">
+        <span class="link-name">英語サイト（English Site）</span>
+        <span class="link-desc">英語話者と英語学習者に向けたサイト</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+    <a class="link-card" href="https://azaleacreativeroom888.github.io/fan-watercolor/" target="_blank" rel="noopener">
+      <div class="link-icon">☁️</div>
+      <div class="link-text">
+        <span class="link-name">水彩画サイト</span>
+        <span class="link-desc">水彩画掲載</span>
+      </div>
+      <span class="link-arrow">›</span>
+    </a>
+
+  </div>
+
+  <p class="section-label">お問い合わせフォーム</p>
+
+  <div class="form-card">
+    <p class="form-intro">ご質問・ご感想などはこちらからどうぞ。<br>Gmailで受け取り、返信いたします。</p>
+
+    <div data-fs-success class="form-success" style="display:none;">
+      <p>✦ メッセージを送信しました。ありがとうございます！</p>
+    </div>
+
+    <div data-fs-error class="form-error-global" style="display:none;"></div>
+
+    <form id="contact-form" action="https://formspree.io/f/maqvpvoz" method="POST">
+
+      <div class="form-group">
+        <label class="form-label" for="name">お名前</label>
+        <input class="form-input" type="text" id="name" name="name" placeholder="お名前" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">メールアドレス <span class="required">*</span></label>
+        <input class="form-input" type="email" id="email" name="email" data-fs-field placeholder="example@email.com" required>
+        <span data-fs-error="email" class="field-error"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="message">メッセージ <span class="required">*</span></label>
+        <textarea class="form-textarea" id="message" name="message" data-fs-field placeholder="メッセージを入力してください…" rows="6" required></textarea>
+        <span data-fs-error="message" class="field-error"></span>
+      </div>
+
+      <button class="form-submit" type="submit" data-fs-submit-btn>
+        <span aria-hidden="true">📮</span> 送信する
+      </button>
+
+    </form>
+  </div>
+
+  <a class="back-link" href="index.html">← 扉に戻る</a>
+
+</main>
+
+<div class="asanoha-band" role="presentation"></div>
+
+<footer>
+  <a class="hub-link" href="https://azaleacreativeroom888.github.io">Azalea Creative Room に戻る</a>
+  <p class="notice">当サイトに掲載されている画像・文章・作品について、AI学習への利用、トレース（トレパク）、無断転載・転載、二次利用を禁止します。スクリーンショットの転載・無断引用はご遠慮ください。</p>
+  <p class="notice">Please refrain from using any images, text, or works on this website for AI training, tracing, unauthorized reproduction, redistribution, or secondary use.</p>
+  <p class="copyright">© 江戸暦 ― Azalea72</p>
+</footer>
+
+<script>
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'maqvpvoz' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+</body>
+</html>
